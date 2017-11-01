@@ -1,8 +1,10 @@
 {
 	"comment": "",
 	"heroku": {
-		"goVersion": "go1.8.3"
+		"goVersion": "go1.8.3",
+		"install": ["./cmd/web"] 
 	},
+	
 	"ignore": "test",
 	"package": [
 		{
