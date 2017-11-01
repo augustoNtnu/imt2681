@@ -1,4 +1,4 @@
-package main
+package Handlers
 
 import (
 	"github.com/dchest/uniuri"
@@ -100,7 +100,7 @@ func HandlerLatest (w http.ResponseWriter, req *http.Request){
 	w.Write(ok2)
 }
 
-func handlerInvoke(w http.ResponseWriter, req *http.Request) {
+func HandlerInvoke(w http.ResponseWriter, req *http.Request) {
 	webhooks := Database.findAll()
 
 
@@ -132,7 +132,7 @@ func handlerInvoke(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func handlerAverage(w http.ResponseWriter, req *http.Request){
+func HandlerAverage(w http.ResponseWriter, req *http.Request){
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
 		panic(err)

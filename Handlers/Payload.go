@@ -1,4 +1,4 @@
-package main
+package Handlers
 
 type webhookobj struct {
 	KeyId 			string		`json:"keyId"`
