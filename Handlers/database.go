@@ -6,6 +6,9 @@ import (
 	"fmt"
 	"log"
 
+	"net/http"
+	"io/ioutil"
+	"encoding/json"
 )
 
 
@@ -35,23 +38,6 @@ func (db *webhookdb)Update (d webhookobj) {
 		fmt.Printf("error: %v",err.Error())
 	}
 
-}
-
-func (db *webhookdb) RetPatt(){
-	session, err := mgo.Dial(db.hostURL)
-	if err != nil {
-		panic(err)
-	}
-	defer session.Close()
-	var resault struct{ text string `json:"text"`}
-	for range db.webhookCollection{
-		//obj := webhookobj{}
-		err = session.DB(db.dbName).C(db.webhookCollection).Find(nil).Select(bson.M{"keyid":1}).One(resault)
-		if err != nil{
-			log.Println(err)
-		}
-
-	}
 }
 
 func (db *webhookdb) Find(keyId string) webhookobj {
@@ -155,4 +141,24 @@ func (db *webhookdb) FindAllRates() []Mother {
 		log.Println(err)
 	}
 	return  allFixers
+}
+
+func FechtAll(){
+	log.Println(Database)
+	resp, err := http.Get("http://api.fixer.io/latest")
+	if err != nil{
+		panic(err)
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil{
+		panic(err.Error())
+	}
+	values := Mother{}
+	err = json.Unmarshal(body, &values)
+	if err != nil{
+		panic(err.Error())
+	}
+	log.Println(values)
+	FixerColl.AddFixer(values)
 }

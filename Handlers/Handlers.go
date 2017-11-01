@@ -111,10 +111,10 @@ func HandlerInvoke(w http.ResponseWriter, req *http.Request) {
 	path := strings.Split(req.URL.Path, "/")
 
 	for i := 0; i <= nrOfWebhooks; i++ {
-		currentWebRate := rates[webhooks[i].TargetCurrency]
 		webhooks[i].CurrentRate = rates[webhooks[i].TargetCurrency]
-		if webhooks[i].MaxTriggerValue > currentWebRate || webhooks[i].MinTriggerValue < currentWebRate || path[2] == "evaluationtrigger" {
+		if  path[2] == "evaluationtrigger" {
 			body, err := json.Marshal(webhooks[i])
+
 			if err != nil {
 				log.Println(err)
 				} else {
@@ -154,4 +154,38 @@ func HandlerAverage(w http.ResponseWriter, req *http.Request){
 	}
 
 	w.Write(response)
+}
+
+
+func InvokeAll(){
+	webhooks := Database.FindAll()
+
+
+	timeValue := time.Now().Local().String()
+	parts := strings.Split(timeValue, " ")
+	rates := FixerColl.FindRates(parts[0])
+	nrOfWebhooks := len(webhooks) - 1
+
+
+	for i := 0; i <= nrOfWebhooks; i++ {
+		currentWebRate := rates[webhooks[i].TargetCurrency]
+		webhooks[i].CurrentRate = rates[webhooks[i].TargetCurrency]
+		if webhooks[i].MaxTriggerValue > currentWebRate || webhooks[i].MinTriggerValue < currentWebRate {
+			body, err := json.Marshal(webhooks[i])
+			if err != nil {
+				log.Println(err)
+			} else {
+
+				response, err := http.Post(webhooks[i].WebhookURL, "application/json", bytes.NewBuffer(body))
+				defer response.Body.Close()
+				if err != nil {
+					log.Println(err)
+				}
+				if response.StatusCode != 200 || response.StatusCode != 204 {
+					log.Println("Invoking failed")
+				}
+
+			}
+		}
 	}
+}

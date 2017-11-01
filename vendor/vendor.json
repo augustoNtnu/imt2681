@@ -2,9 +2,10 @@
 	"comment": "",
 	"heroku": {
 		"goVersion": "go1.8.3",
-		"install": ["./cmd/web"] 
+		"install": [
+			"./cmd/web"
+		]
 	},
-	
 	"ignore": "test",
 	"package": [
 		{
@@ -54,6 +55,18 @@
 			"path": "imt2681/cmd/web",
 			"revision": "1289bc467a105e4610f38d920ea0efbf91f8f247",
 			"revisionTime": "2017-11-01T16:13:13Z"
+		},
+		{
+			"checksumSHA1": "nBbpuI6HmLwJ8oz/DEj7n4nCjIY=",
+			"path": "imt2681/cmd/worker",
+			"revision": "4b03329fd74134311315b1f2e413e3364b2b9ac7",
+			"revisionTime": "2017-11-01T18:54:06Z"
+		},
+		{
+			"checksumSHA1": "m4zfoAzGydLa87HthFcnvTFgwVk=",
+			"path": "imt2681/fixerticker",
+			"revision": "4b03329fd74134311315b1f2e413e3364b2b9ac7",
+			"revisionTime": "2017-11-01T18:54:06Z"
 		}
 	],
 	"rootPath": "imt2681"

@@ -13,6 +13,14 @@ type webhookobj struct {
 	MinTriggerValue float64     `json:"minTriggerValue"`
 	MaxTriggerValue float64     `json:"maxTriggerValue"`
 }
+type invokeHook struct{
+
+	BaseCurrency    string 		`json:"baseCurrency"`
+	TargetCurrency  string 		`json:"targetCurrency"`
+	CurrentRate 	float64 	`json:"currentRate"`
+	MinTriggerValue float64     `json:"minTriggerValue"`
+	MaxTriggerValue float64     `json:"maxTriggerValue"`
+}
 
 type Mother struct {
 	Base string `json:"base"`
