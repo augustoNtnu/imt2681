@@ -10,6 +10,7 @@ import (
 )
 
 func FechtAll(){
+	log.Println(Database)
 	resp, err := http.Get("http://api.fixer.io/latest")
 	if err != nil{
 		panic(err)

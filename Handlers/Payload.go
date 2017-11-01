@@ -1,5 +1,8 @@
 package Handlers
 
+
+import "os"
+
 type webhookobj struct {
 	KeyId 			string		`json:"keyId"`
 	WebhookURL      string 		`json:"webhookURL"`
@@ -16,8 +19,10 @@ type Mother struct {
 
 	Rates map[string]float64 `json:"rates"`
 }
-var Database = webhookdb{"127.0.0.1:27017","local","webhooks"}
-var FixerColl = webhookdb{"127.0.0.1:27017","local","fixerrates"}
+//mongodb://<dbuser>:<dbpassword>@ds229415.mlab.com:29415/assigment2
+var Database = webhookdb{("mongodb://"+os.Getenv("userName")+":"+os.Getenv("userPass")+"@ds229415.mlab.com:29415/assigment2"),os.Getenv("Database"),os.Getenv("COLLECTION1")}
+
+var FixerColl = webhookdb{("mongodb://"+os.Getenv("userName")+":"+os.Getenv("userPass")+"@ds229415.mlab.com:29415/assigment2"),os.Getenv("Database"),os.Getenv("COLLECTION2")}
 
 type webhookdb struct {
 	hostURL           string
