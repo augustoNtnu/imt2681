@@ -141,9 +141,9 @@ func handlerAverage(w http.ResponseWriter, req *http.Request){
 	baseValues := webhookobj{}
 	err = json.Unmarshal(body,baseValues)
 	allRates := FixerColl.findAllRates()
-	length := len(allRates)-1
+	//length := len(allRates)-1
 
-	for i := 0; i <= length; i++{
+	for i := 0; i <= 2; i++{
 
 		average += allRates[i].Rates[baseValues.TargetCurrency]
 	}
