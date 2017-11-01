@@ -1,17 +1,13 @@
 package main
 
 import (
-	//"github.com/gorilla/mux"
 	"github.com/dchest/uniuri"
 	"net/http"
 	"io/ioutil"
 	"log"
 	"encoding/json"
-
 	"strings"
-
 	"time"
-
 	"bytes"
 
 
