@@ -49,7 +49,7 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 		keyId := parts[2]
 		log.Println("keyId for GET", keyId)
 
-		db = Database.find(keyId)
+		db = Database.Find(keyId)
 		log.Println(db.KeyId)
 		value, err := json.Marshal(db)
 
@@ -61,7 +61,7 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 	case "DELETE":
 		keyId := parts[2]
 
-		success := Database.delete(keyId)
+		success := Database.Delete(keyId)
 		if success == 0 {
 			log.Println("error: delete failed")
 		}
@@ -90,7 +90,7 @@ func HandlerLatest (w http.ResponseWriter, req *http.Request){
 	//time.Format("2006-01-02")
 	log.Println("tid",parts[0])
 	log.Println("Kroner for vi hope",t.TargetCurrency)
-	resault:= FixerColl.findRates(parts[0])
+	resault:= FixerColl.FindRates(parts[0])
 
 	ok := resault[t.TargetCurrency]
 	ok2,err := json.Marshal(ok)
@@ -101,17 +101,18 @@ func HandlerLatest (w http.ResponseWriter, req *http.Request){
 }
 
 func HandlerInvoke(w http.ResponseWriter, req *http.Request) {
-	webhooks := Database.findAll()
+	webhooks := Database.FindAll()
 
 
 	timeValue := time.Now().Local().String()
 	parts := strings.Split(timeValue, " ")
-	rates := FixerColl.findRates(parts[0])
+	rates := FixerColl.FindRates(parts[0])
 	nrOfWebhooks := len(webhooks) - 1
 	path := strings.Split(req.URL.Path, "/")
 
 	for i := 0; i <= nrOfWebhooks; i++ {
 		currentWebRate := rates[webhooks[i].TargetCurrency]
+		webhooks[i].CurrentRate = rates[webhooks[i].TargetCurrency]
 		if webhooks[i].MaxTriggerValue > currentWebRate || webhooks[i].MinTriggerValue < currentWebRate || path[2] == "evaluationtrigger" {
 			body, err := json.Marshal(webhooks[i])
 			if err != nil {
@@ -140,7 +141,7 @@ func HandlerAverage(w http.ResponseWriter, req *http.Request){
 	var average float64
 	baseValues := webhookobj{}
 	err = json.Unmarshal(body,baseValues)
-	allRates := FixerColl.findAllRates()
+	allRates := FixerColl.FindAllRates()
 	//length := len(allRates)-1
 
 	for i := 0; i <= 2; i++{

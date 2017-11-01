@@ -1,6 +1,7 @@
-package Handlers
+package fixerticker
 
 import (
+	"imt2681/Handlers"
 	"net/http"
 	"log"
 //	"encoding/json"
@@ -26,5 +27,5 @@ func FechtAll(){
 		panic(err.Error())
 	}
 	log.Println(values)
-	FixerColl.addFixer(values)
+	Handlers.FixerColl.
 }

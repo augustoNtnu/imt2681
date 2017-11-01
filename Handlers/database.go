@@ -23,7 +23,7 @@ func(db *webhookdb) Add(s webhookobj) {
 
 }
 
-func (db *webhookdb)update (d webhookobj) {
+func (db *webhookdb)Update (d webhookobj) {
 	session, err := mgo.Dial(db.hostURL)
 	if err != nil {
 		panic(err)
@@ -37,7 +37,7 @@ func (db *webhookdb)update (d webhookobj) {
 
 }
 
-func (db *webhookdb) retPatt(){
+func (db *webhookdb) RetPatt(){
 	session, err := mgo.Dial(db.hostURL)
 	if err != nil {
 		panic(err)
@@ -54,7 +54,7 @@ func (db *webhookdb) retPatt(){
 	}
 }
 
-func (db *webhookdb) find(keyId string) webhookobj {
+func (db *webhookdb) Find(keyId string) webhookobj {
 	session, err := mgo.Dial(db.hostURL)
 	if err != nil {
 		panic(err)
@@ -71,7 +71,7 @@ func (db *webhookdb) find(keyId string) webhookobj {
 	return resualt
 
 }
-func (db *webhookdb) findRates(date string) map[string]float64 {
+func (db *webhookdb) FindRates(date string) map[string]float64 {
 	session,err  := mgo.Dial(db.hostURL)
 	if err != nil {
 		panic(err)
@@ -89,7 +89,7 @@ func (db *webhookdb) findRates(date string) map[string]float64 {
 }
 
 
-func(db *webhookdb) delete(keyId string) int {
+func(db *webhookdb) Delete(keyId string) int {
 	session, err := mgo.Dial(db.hostURL)
 	if err != nil {
 		panic(err)
@@ -102,7 +102,7 @@ func(db *webhookdb) delete(keyId string) int {
 		return 0
 	} else{ return 1}
 }
-func (db *webhookdb) addFixer(m Mother){
+func (db *webhookdb) AddFixer(m Mother){
 	session, err := mgo.Dial(db.hostURL)
 	if err != nil {
 		panic(err)
@@ -115,7 +115,7 @@ func (db *webhookdb) addFixer(m Mother){
 	}
 }
 
-func (db *webhookdb) count() int{
+func (db *webhookdb) Count() int{
 	session, err := mgo.Dial(db.hostURL)
 	if err != nil {
 		panic(err)
@@ -128,7 +128,7 @@ func (db *webhookdb) count() int{
 	} else{ return returnValue}
 }
 
-func (db *webhookdb) findAll() []webhookobj{
+func (db *webhookdb) FindAll() []webhookobj{
 	session, err := mgo.Dial(db.hostURL)
 	if err != nil {
 		panic(err)
@@ -143,7 +143,7 @@ func (db *webhookdb) findAll() []webhookobj{
 
 }
 
-func (db *webhookdb) findAllRates() []Mother {
+func (db *webhookdb) FindAllRates() []Mother {
 	session, err := mgo.Dial(db.hostURL)
 	if err != nil {
 		panic(err)
