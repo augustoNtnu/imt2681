@@ -5,18 +5,10 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"fmt"
 	"log"
-	//"regexp/syntax"
-)
-//type patternsobj struct{
-//	pattern string `json:"pattern"`
 
-var Database = webhookdb{"127.0.0.1:27017","local","webhooks"}
-var FixerColl = webhookdb{"127.0.0.1:27017","local","fixerrates"}
-type webhookdb struct {
-	hostURL string
-	dbName string
-	webhookCollection string
-}
+)
+
+
 func(db *webhookdb) Add(s webhookobj) {
 	session, err := mgo.Dial(db.hostURL)
 	if err != nil {
@@ -30,20 +22,6 @@ func(db *webhookdb) Add(s webhookobj) {
 	}
 
 }
-/*
-func(db *webhookdb) AddPatt(s patternsobj) {
-	session, err := mgo.Dial(db.hostURL)
-	if err != nil {
-		panic(err)
-	}
-	defer session.Close()
-
-	err = session.DB(db.dbName).C(db.webhookCollection).Insert(s)
-	if err != nil {
-		fmt.Printf("error in insert: %v", err.Error())
-	}
-}
-*/
 
 func (db *webhookdb)update (d webhookobj) {
 	session, err := mgo.Dial(db.hostURL)
@@ -69,7 +47,9 @@ func (db *webhookdb) retPatt(){
 	for range db.webhookCollection{
 		//obj := webhookobj{}
 		err = session.DB(db.dbName).C(db.webhookCollection).Find(nil).Select(bson.M{"keyid":1}).One(resault)
-		Patterns= append(Patterns,resault.text)
+		if err != nil{
+			log.Println(err)
+		}
 
 	}
 }
@@ -133,4 +113,46 @@ func (db *webhookdb) addFixer(m Mother){
 	if err != nil {
 		fmt.Printf("error in insert: %v", err.Error())
 	}
+}
+
+func (db *webhookdb) count() int{
+	session, err := mgo.Dial(db.hostURL)
+	if err != nil {
+		panic(err)
+	}
+	defer session.Close()
+	returnValue, err := session.DB(db.dbName).C(db.webhookCollection).Count()
+	if err != nil{
+		log.Println("error:  %v", err.Error())
+		return 0
+	} else{ return returnValue}
+}
+
+func (db *webhookdb) findAll() []webhookobj{
+	session, err := mgo.Dial(db.hostURL)
+	if err != nil {
+		panic(err)
+	}
+	defer session.Close()
+	allHooks := []webhookobj{}
+	err = session.DB(db.dbName).C(db.webhookCollection).Find(nil).All(&allHooks)
+	if err != nil{
+		log.Println(err)
+	}
+	return  allHooks
+
+}
+
+func (db *webhookdb) findAllRates() []Mother {
+	session, err := mgo.Dial(db.hostURL)
+	if err != nil {
+		panic(err)
+	}
+	defer session.Close()
+	allFixers := []Mother{}
+	err = session.DB(db.dbName).C(db.webhookCollection).Find(nil).All(&allFixers)
+	if err != nil{
+		log.Println(err)
+	}
+	return  allFixers
 }

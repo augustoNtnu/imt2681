@@ -8,13 +8,6 @@ import (
 	"io/ioutil"
 	"encoding/json"
 )
-type Mother struct {
-	Base string `json:"base"`
-	Date string	`json:"date"`
-
-	Rates map[string]float64 `json:"rates"`
-}
-//var AllValues mother
 
 func FechtAll(){
 	resp, err := http.Get("http://api.fixer.io/latest")

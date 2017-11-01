@@ -11,20 +11,15 @@ import (
 	"strings"
 
 	"time"
+
+	"bytes"
+
+
 )
 
-type webhookobj struct {
-	KeyId 			string		`json:"keyId"`
-	WebhookURL      string 		`json:"webhookURL"`
-	BaseCurrency    string 		`json:"baseCurrency"`
-	TargetCurrency  string 		`json:"targetCurrency"`
-	CurrentRate 	float64 	`json:"currentRate"`
-	MinTriggerValue float64     `json:"minTriggerValue"`
-	MaxTriggerValue float64     `json:"maxTriggerValue"`
-}
 
-//var DbPatterns = webhookdb{"127.0.0.1:27017", "local", "patterns"}
-var Patterns []string
+
+
 
 func HandlerHook(w http.ResponseWriter, req *http.Request) {
 	parts := strings.Split(req.URL.Path, "/")
@@ -48,12 +43,11 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 		hash := []byte(uniuri.New())
 		w.Write([]byte(hash))
 		h := string(hash)
-		Patterns = append(Patterns, h)
 		t.KeyId = h
 		log.Println("object key id: %v", t.KeyId)
 		Database.Add(t)
 
-		log.Println(Patterns)
+
 	case "GET":
 		db := webhookobj{}
 		keyId := parts[2]
@@ -93,9 +87,9 @@ func HandlerLatest (w http.ResponseWriter, req *http.Request){
 	if err != nil {
 		panic(err)
 	}
-	time := time.Now().Local().String()
+	time := time.Now().UTC().String()
 	parts:= strings.Split(time, " ")
-	//parts[0] = "2017-10-31"
+	parts[0] = "2017-10-31"
 
 	//time.Format("2006-01-02")
 	log.Println("tid",parts[0])
@@ -108,30 +102,59 @@ func HandlerLatest (w http.ResponseWriter, req *http.Request){
 		log.Println(err)
 	}
 	w.Write(ok2)
-
-
-
-
-
-	//thing,err := json.Marshal(resault)
-	//if err != nil{
-	//	log.Println(err.Error())
-
-	//w.Write(thing)
 }
 
-/*
-func main (){
-	FechtAll()
-	//http.HandleFunc("/hreq.URL.Pathello/{patterns}", handlerRegi)
-	//http.HandleFunc("/hello", handlerRegi)
-	//DbPatterns.retPatt()
+func handlerInvoke(w http.ResponseWriter, req *http.Request) {
+	webhooks := Database.findAll()
 
-	//r:= mux.NewRouter()
-	//r.HandleFunc("/hello/", handlerRegi)
-	http.HandleFunc("/hello/latest/", HandlerLatest)
-	http.HandleFunc("/hello/", HandlerHook)
-	http.ListenAndServe("127.0.0.1:8085",nil)
 
+	timeValue := time.Now().Local().String()
+	parts := strings.Split(timeValue, " ")
+	rates := FixerColl.findRates(parts[0])
+	nrOfWebhooks := len(webhooks) - 1
+	path := strings.Split(req.URL.Path, "/")
+
+	for i := 0; i <= nrOfWebhooks; i++ {
+		currentWebRate := rates[webhooks[i].TargetCurrency]
+		if webhooks[i].MaxTriggerValue > currentWebRate || webhooks[i].MinTriggerValue < currentWebRate || path[2] == "evaluationtrigger" {
+			body, err := json.Marshal(webhooks[i])
+			if err != nil {
+				log.Println(err)
+				} else {
+
+				response, err := http.Post(webhooks[i].WebhookURL, "application/json", bytes.NewBuffer(body))
+				defer response.Body.Close()
+				if err != nil {
+					log.Println(err)
+				}
+				if response.StatusCode != 200 || response.StatusCode != 204 {
+					log.Println("Invoking failed")
+				}
+
+			}
+		}
+	}
 }
-*/
+
+func handlerAverage(w http.ResponseWriter, req *http.Request){
+	body, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		panic(err)
+	}
+	var average float64
+	baseValues := webhookobj{}
+	err = json.Unmarshal(body,baseValues)
+	allRates := FixerColl.findAllRates()
+	length := len(allRates)-1
+
+	for i := 0; i <= length; i++{
+
+		average += allRates[i].Rates[baseValues.TargetCurrency]
+	}
+	response, err := json.Marshal(average)
+	if err != nil{
+		log.Println(err)
+	}
+
+	w.Write(response)
+	}
