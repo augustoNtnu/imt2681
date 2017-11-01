@@ -5,8 +5,8 @@ import "os"
 //import "os"
 
 type webhookobj struct {
-	KeyId 			string		`json:"keyId"`
-	WebhookURL      string 		`json:"webhookURL"`
+	KeyId 			string		`json:"keyId,omitempty"`
+	WebhookURL      string 		`json:"webhookURL,omitempty"`
 	BaseCurrency    string 		`json:"baseCurrency"`
 	TargetCurrency  string 		`json:"targetCurrency"`
 	CurrentRate 	float64 	`json:"currentRate"`
@@ -38,4 +38,8 @@ type webhookdb struct {
 	hostURL           string
 	dbName            string
 	webhookCollection string
+
 }
+
+
+//http.Error(w, http.StatusText(status), status)
