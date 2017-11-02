@@ -46,22 +46,29 @@
 			"revisionTime": "2016-08-18T02:01:20Z"
 		},
 		{
-			"checksumSHA1": "UFyMw5K/+UNnZCrkzTwn0DwzSXg=",
+			"checksumSHA1": "sSyXhhjP6W79n/wgtgllgHU36dE=",
+			"origin": "imt2681/vendor/imt2681/Handlers",
+			"path": "imt2681/Handlers",
+			"revision": "87ff31a4c743b5f17e64421283f195b4bcf92e7f",
+			"revisionTime": "2017-11-02T13:51:06Z"
+		},
+		{
+			"checksumSHA1": "DJMmGjkZz6ieQJyUDQj5uvTwM9Q=",
 			"path": "imt2681/cmd/web",
-			"revision": "6c776a6b44e1aa5c599d447a62d6c9731df8b080",
-			"revisionTime": "2017-11-02T12:48:43Z"
+			"revision": "87ff31a4c743b5f17e64421283f195b4bcf92e7f",
+			"revisionTime": "2017-11-02T13:51:06Z"
 		},
 		{
 			"checksumSHA1": "jBpLt4C4t/AYD3y21iPUxclZ4H4=",
 			"path": "imt2681/cmd/worker",
-			"revision": "6c776a6b44e1aa5c599d447a62d6c9731df8b080",
-			"revisionTime": "2017-11-02T12:48:43Z"
+			"revision": "87ff31a4c743b5f17e64421283f195b4bcf92e7f",
+			"revisionTime": "2017-11-02T13:51:06Z"
 		},
 		{
 			"checksumSHA1": "prL3ODTpMIZC0KHRw+c/G6SRlwY=",
 			"path": "imt2681/fixerticker",
-			"revision": "6c776a6b44e1aa5c599d447a62d6c9731df8b080",
-			"revisionTime": "2017-11-02T12:48:43Z"
+			"revision": "87ff31a4c743b5f17e64421283f195b4bcf92e7f",
+			"revisionTime": "2017-11-02T13:51:06Z"
 		}
 	],
 	"rootPath": "imt2681"

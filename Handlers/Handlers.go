@@ -100,7 +100,7 @@ func HandlerLatest (w http.ResponseWriter, req *http.Request){
 	}
 	time := time.Now().UTC().String()
 	parts:= strings.Split(time, " ")
-	parts[0] = "2017-10-31"
+	parts[0] = "2017-11-01"
 
 	//time.Format("2006-01-02")
 	log.Println("tid",parts[0])

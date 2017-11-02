@@ -100,7 +100,7 @@ func HandlerLatest (w http.ResponseWriter, req *http.Request){
 	}
 	time := time.Now().UTC().String()
 	parts:= strings.Split(time, " ")
-	parts[0] = "2017-10-31"
+	parts[0] = "2017-11-01"
 
 	//time.Format("2006-01-02")
 	log.Println("tid",parts[0])
@@ -117,7 +117,7 @@ func HandlerLatest (w http.ResponseWriter, req *http.Request){
 		status = 500
 	}
 	w.Write(ok2)
-	http.Error(w, http.StatusText(status), status)
+	w.WriteHeader(status)
 }
 
 func HandlerInvoke(w http.ResponseWriter, req *http.Request) {
@@ -161,7 +161,7 @@ func HandlerInvoke(w http.ResponseWriter, req *http.Request) {
 			}
 		}
 	}
-	http.Error(w, http.StatusText(status), status)
+	w.WriteHeader(status)
 }
 
 func HandlerAverage(w http.ResponseWriter, req *http.Request){
@@ -194,7 +194,7 @@ func HandlerAverage(w http.ResponseWriter, req *http.Request){
 	}
 
 	w.Write(response)
-	http.Error(w, http.StatusText(status), status)
+	w.WriteHeader(status)
 }
 
 
