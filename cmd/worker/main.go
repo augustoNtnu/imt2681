@@ -8,5 +8,5 @@ import (
 
 
 func main(){
-Handlers.ticker
+Handlers.Ticker
 }
