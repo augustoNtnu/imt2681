@@ -9,8 +9,8 @@ import (
 func Ticker(){
 var value = 20000
 for i:=0; i <value; i++{
-	Handlers.FechtAll()
-	Handlers.InvokeAll()
+	Handlers.FixerColl.FechtAll()
+	Handlers.Database.InvokeAll(Handlers.FixerColl)
 
 	time.Sleep(23 * time.Hour)
 	}
