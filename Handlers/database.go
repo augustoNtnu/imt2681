@@ -28,7 +28,7 @@ func(db *webhookdb) Add(s webhookobj) int {
 	}
 	return status
 }
-
+/*
 func (db *webhookdb)Update (d webhookobj) int {
 	status := 1
 	session, err := mgo.Dial(db.hostURL)
@@ -45,7 +45,7 @@ func (db *webhookdb)Update (d webhookobj) int {
 		}
 	return status
 }
-
+*/
 func (db *webhookdb) Find(keyId string) (webhookobj, int) {
 	status := 1
 	session, err := mgo.Dial(db.hostURL)
@@ -188,7 +188,7 @@ func (db *webhookdb) FindAllRates() ([]Mother, int) {
 	return  allFixers, status
 }
 
-func FechtAll() int{
+func(w *webhookdb) FechtAll() int{
 	status := 1
 	log.Println(Database)
 	resp, err := http.Get("http://api.fixer.io/latest")
@@ -209,11 +209,11 @@ func FechtAll() int{
 		panic(err.Error())
 	}
 	log.Println(values)
-	query, thingy := FixerColl.FindFixer(values.Date)
+	query, thingy := w.FindFixer(values.Date)
 	if values.Date == query.Date{
 		log.Println("if 0, then error:  ",thingy)
 		log.Println("		todays fixer already exist")
-	}else {FixerColl.AddFixer(values)}
+	}else {w.AddFixer(values)}
 	return status
 }
 

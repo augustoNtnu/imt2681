@@ -35,7 +35,6 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 		t := webhookobj{}
 		err = json.Unmarshal(body, &t)
 		if err != nil {
-			panic(err)
 			status = 400
 		}
 
@@ -201,8 +200,8 @@ func HandlerAverage(w http.ResponseWriter, req *http.Request){
 }
 
 
-func InvokeAll(){
-	webhooks, thingy := Database.FindAll()
+func (db *webhookdb)InvokeAll(fixer webhookdb){
+	webhooks, thingy := db.FindAll()
 	if thingy == 0{
 		log.Println( "findAll failed")
 	}
@@ -210,7 +209,7 @@ func InvokeAll(){
 
 	timeValue := time.Now().Local().String()
 	parts := strings.Split(timeValue, " ")
-	rates,thang := FixerColl.FindRates(parts[0])
+	rates,thang := fixer.FindRates(parts[0])
 	if thang == 0{
 		log.Println("findRates failed")
 	}
