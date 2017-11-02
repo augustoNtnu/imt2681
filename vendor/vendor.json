@@ -3,7 +3,7 @@
 	"heroku": {
 		"goVersion": "go1.8.3",
 		"install": [
-			"./cmd/web"
+			"./cmd/web", "./cmd/worker/"
 		]
 	},
 	"ignore": "test",
@@ -45,28 +45,28 @@
 			"revisionTime": "2016-08-18T02:01:20Z"
 		},
 		{
-			"checksumSHA1": "8gptXJ95o3enZ4bZMdrxdm4Terk=",
+			"checksumSHA1": "OtxIzfHuQC7+EdaTTJEFJzgVemg=",
 			"path": "imt2681/Handlers",
-			"revision": "66a5fe48f9f8ededefc1a5031ac939e795580789",
-			"revisionTime": "2017-11-02T11:12:36Z"
+			"revision": "6c776a6b44e1aa5c599d447a62d6c9731df8b080",
+			"revisionTime": "2017-11-02T12:48:43Z"
 		},
 		{
-			"checksumSHA1": "ddO26seZN5YBSCWaDyTwP90qKOM=",
+			"checksumSHA1": "UFyMw5K/+UNnZCrkzTwn0DwzSXg=",
 			"path": "imt2681/cmd/web",
-			"revision": "66a5fe48f9f8ededefc1a5031ac939e795580789",
-			"revisionTime": "2017-11-02T11:12:36Z"
+			"revision": "6c776a6b44e1aa5c599d447a62d6c9731df8b080",
+			"revisionTime": "2017-11-02T12:48:43Z"
 		},
 		{
 			"checksumSHA1": "jBpLt4C4t/AYD3y21iPUxclZ4H4=",
 			"path": "imt2681/cmd/worker",
-			"revision": "66a5fe48f9f8ededefc1a5031ac939e795580789",
-			"revisionTime": "2017-11-02T11:12:36Z"
+			"revision": "6c776a6b44e1aa5c599d447a62d6c9731df8b080",
+			"revisionTime": "2017-11-02T12:48:43Z"
 		},
 		{
-			"checksumSHA1": "DeLGIPQ36ZuIg6HSIg/46cGNm4o=",
+			"checksumSHA1": "prL3ODTpMIZC0KHRw+c/G6SRlwY=",
 			"path": "imt2681/fixerticker",
-			"revision": "66a5fe48f9f8ededefc1a5031ac939e795580789",
-			"revisionTime": "2017-11-02T11:12:36Z"
+			"revision": "6c776a6b44e1aa5c599d447a62d6c9731df8b080",
+			"revisionTime": "2017-11-02T12:48:43Z"
 		}
 	],
 	"rootPath": "imt2681"

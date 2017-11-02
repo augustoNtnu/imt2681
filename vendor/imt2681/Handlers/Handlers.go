@@ -10,7 +10,7 @@ import (
 	"time"
 	"bytes"
 
-	
+
 )
 
 
@@ -30,7 +30,7 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 			log.Println(err)
 			status = 400
 		}
-		log.Println(string(body))
+		//log.Println(string(body))
 
 		t := webhookobj{}
 		err = json.Unmarshal(body, &t)
@@ -40,7 +40,7 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 		}
 
 		hash := []byte(uniuri.New())
-		w.Write([]byte(hash))
+		//w.Write([]byte(hash))
 		h := string(hash)
 		t.KeyId = h
 		log.Println("object key id: %v", t.KeyId)
@@ -80,8 +80,7 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 	default:
 		log.Println("error i switch")
 	}
-//	http.Error(w, http.StatusText(status), status)
-	w.WriteHeader(status)
+	//http.Error(w, http.StatusText(status), status)
 
 }
 
@@ -117,7 +116,7 @@ func HandlerLatest (w http.ResponseWriter, req *http.Request){
 		status = 500
 	}
 	w.Write(ok2)
-	w.WriteHeader(status)
+	http.Error(w, http.StatusText(status), status)
 }
 
 func HandlerInvoke(w http.ResponseWriter, req *http.Request) {
@@ -161,7 +160,7 @@ func HandlerInvoke(w http.ResponseWriter, req *http.Request) {
 			}
 		}
 	}
-	w.WriteHeader(status)
+	http.Error(w, http.StatusText(status), status)
 }
 
 func HandlerAverage(w http.ResponseWriter, req *http.Request){
@@ -194,7 +193,7 @@ func HandlerAverage(w http.ResponseWriter, req *http.Request){
 	}
 
 	w.Write(response)
-	w.WriteHeader(status)
+	http.Error(w, http.StatusText(status), status)
 }
 
 
