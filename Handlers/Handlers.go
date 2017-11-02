@@ -40,12 +40,12 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 		}
 
 		hash := []byte(uniuri.New())
-		w.Write([]byte(hash))
+		//w.Write([]byte(hash))
 		h := string(hash)
 		t.KeyId = h
 		log.Println("object key id: %v", t.KeyId)
-		value := Database.Add(t)
-		if value == 0{
+		value2 := Database.Add(t)
+		if value2 == 0{
 			status = 500
 		}
 
@@ -80,7 +80,7 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 	default:
 		log.Println("error i switch")
 	}
-	http.Error(w, http.StatusText(status), status)
+	//http.Error(w, http.StatusText(status), status)
 
 }
 

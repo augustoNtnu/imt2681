@@ -45,28 +45,28 @@
 			"revisionTime": "2016-08-18T02:01:20Z"
 		},
 		{
-			"checksumSHA1": "Hp/mYER8DQOUPGCTxh6PG70Uc7E=",
+			"checksumSHA1": "8gptXJ95o3enZ4bZMdrxdm4Terk=",
 			"path": "imt2681/Handlers",
-			"revision": "3790d9ab03fc36f6480963285d8787eb5e9f1d51",
-			"revisionTime": "2017-11-01T21:58:14Z"
+			"revision": "66a5fe48f9f8ededefc1a5031ac939e795580789",
+			"revisionTime": "2017-11-02T11:12:36Z"
 		},
 		{
 			"checksumSHA1": "ddO26seZN5YBSCWaDyTwP90qKOM=",
 			"path": "imt2681/cmd/web",
-			"revision": "3790d9ab03fc36f6480963285d8787eb5e9f1d51",
-			"revisionTime": "2017-11-01T21:58:14Z"
+			"revision": "66a5fe48f9f8ededefc1a5031ac939e795580789",
+			"revisionTime": "2017-11-02T11:12:36Z"
 		},
 		{
 			"checksumSHA1": "jBpLt4C4t/AYD3y21iPUxclZ4H4=",
 			"path": "imt2681/cmd/worker",
-			"revision": "3790d9ab03fc36f6480963285d8787eb5e9f1d51",
-			"revisionTime": "2017-11-01T21:58:14Z"
+			"revision": "66a5fe48f9f8ededefc1a5031ac939e795580789",
+			"revisionTime": "2017-11-02T11:12:36Z"
 		},
 		{
 			"checksumSHA1": "DeLGIPQ36ZuIg6HSIg/46cGNm4o=",
 			"path": "imt2681/fixerticker",
-			"revision": "3790d9ab03fc36f6480963285d8787eb5e9f1d51",
-			"revisionTime": "2017-11-01T21:58:14Z"
+			"revision": "66a5fe48f9f8ededefc1a5031ac939e795580789",
+			"revisionTime": "2017-11-02T11:12:36Z"
 		}
 	],
 	"rootPath": "imt2681"

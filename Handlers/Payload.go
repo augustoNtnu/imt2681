@@ -1,6 +1,6 @@
 package Handlers
 
-import "os"
+//import "os"
 
 //import "os"
 
@@ -31,8 +31,8 @@ type Mother struct {
 //mongodb://<dbuser>:<dbpassword>@ds229415.mlab.com:29415/assigment2
 //var Database = webhookdb{("mongodb://"+os.Getenv("userName")+":"+os.Getenv("userPass")+"@ds229415.mlab.com:29415/assigment2"),os.Getenv("Database"),os.Getenv("COLLECTION1")}
 //var Database = webhookdb{("mongodb://user:test@ds229415.mlab.com:29415/assigment2"),"assigment2","webhooks"}
-var Database = webhookdb{"mongodb://user:test@ds042527.mlab.com:42527/cloudtech", "cloudtech","webhooks"}
-var FixerColl = webhookdb{("mongodb://"+os.Getenv("userName")+":"+os.Getenv("userPass")+"@ds229415.mlab.com:29415/assigment2"),os.Getenv("Database"),os.Getenv("COLLECTION2")}
+var Database = webhookdb{"user:test@ds042527.mlab.com:42527/cloudtech", "cloudtech","webhooks"}
+var FixerColl = webhookdb{"user:test@ds042527.mlab.com:42527/cloudtech","cloudtech","fixers"}
 
 type webhookdb struct {
 	hostURL           string

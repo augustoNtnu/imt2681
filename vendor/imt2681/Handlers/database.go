@@ -210,8 +210,9 @@ func FechtAll() int{
 	}
 	log.Println(values)
 	query, thingy := FixerColl.FindFixer(values.Date)
-	if values.Date == query.Date || thingy == 0 {
-		log.Println("todays fixer already exist")
+	if values.Date == query.Date{
+		log.Println("if 0, then error:  ",thingy)
+		log.Println("		todays fixer already exist")
 	}else {FixerColl.AddFixer(values)}
 	return status
 }

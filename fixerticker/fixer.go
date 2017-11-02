@@ -2,13 +2,7 @@ package fixerticker
 
 import (
 	"imt2681/Handlers"
-	"net/http"
-
-	"log"
-//	"encoding/json"
-
-	"io/ioutil"
-	"encoding/json"
+	"time"
 )
 
 
