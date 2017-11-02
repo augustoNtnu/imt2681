@@ -19,6 +19,7 @@ import (
 
 func HandlerHook(w http.ResponseWriter, req *http.Request) {
 	parts := strings.Split(req.URL.Path, "/")
+	status := 200
 //	var status int
 	log.Println(len(parts))
 
@@ -26,7 +27,8 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 	case "POST":
 		body, err := ioutil.ReadAll(req.Body)
 		if err != nil {
-			//status = 500
+			log.Println(err)
+			status = 400
 		}
 		//log.Println(string(body))
 
@@ -34,6 +36,7 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 		err = json.Unmarshal(body, &t)
 		if err != nil {
 			panic(err)
+			status = 400
 		}
 
 		hash := []byte(uniuri.New())
@@ -41,47 +44,58 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 		h := string(hash)
 		t.KeyId = h
 		log.Println("object key id: %v", t.KeyId)
-		Database.Add(t)
+		value := Database.Add(t)
+		if value == 0{
+			status = 500
+		}
 
 
 	case "GET":
 		db := webhookobj{}
 		keyId := parts[2]
+		var faenskap int
 		log.Println("keyId for GET", keyId)
 
-		db = Database.find(keyId)
+		db, faenskap = Database.Find(keyId)
+		if faenskap == 0 {
+			status = 500
+		}
 		log.Println(db.KeyId)
 		value, err := json.Marshal(db)
-
 		if err != nil {
 			log.Println("error encoding webhook:  %v", err.Error())
+			status = 500
 		}
 		w.Write(value)
 
 	case "DELETE":
 		keyId := parts[2]
 
-		success := Database.delete(keyId)
+		success := Database.Delete(keyId)
 		if success == 0 {
 			log.Println("error: delete failed")
+			status = 404
 		}
 
 	default:
 		log.Println("error i switch")
 	}
-
+	http.Error(w, http.StatusText(status), status)
 
 }
 
 func HandlerLatest (w http.ResponseWriter, req *http.Request){
+	status := 200
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
 		panic(err)
+		status = 400
 	}
 	t := webhookobj{}
 	err = json.Unmarshal(body, &t)
 	if err != nil {
 		panic(err)
+		status = 400
 	}
 	time := time.Now().UTC().String()
 	parts:= strings.Split(time, " ")
@@ -90,35 +104,128 @@ func HandlerLatest (w http.ResponseWriter, req *http.Request){
 	//time.Format("2006-01-02")
 	log.Println("tid",parts[0])
 	log.Println("Kroner for vi hope",t.TargetCurrency)
-	resault:= FixerColl.findRates(parts[0])
+	resault, thingy:= FixerColl.FindRates(parts[0])
+	if thingy == 0{
+		status = 500
+	}
 
 	ok := resault[t.TargetCurrency]
 	ok2,err := json.Marshal(ok)
 	if err !=nil {
 		log.Println(err)
+		status = 500
 	}
 	w.Write(ok2)
+	http.Error(w, http.StatusText(status), status)
 }
 
 func HandlerInvoke(w http.ResponseWriter, req *http.Request) {
-	webhooks := Database.findAll()
-
+	status := 200
+	webhooks, thingy := Database.FindAll()
+	if thingy == 0{
+		status = 500
+	}
 
 	timeValue := time.Now().Local().String()
 	parts := strings.Split(timeValue, " ")
-	rates := FixerColl.findRates(parts[0])
+	rates, thang := FixerColl.FindRates(parts[0])
+	if thang == 0 {
+		status = 500
+	}
 	nrOfWebhooks := len(webhooks) - 1
 	path := strings.Split(req.URL.Path, "/")
 
 	for i := 0; i <= nrOfWebhooks; i++ {
-		currentWebRate := rates[webhooks[i].TargetCurrency]
-		if webhooks[i].MaxTriggerValue > currentWebRate || webhooks[i].MinTriggerValue < currentWebRate || path[2] == "evaluationtrigger" {
+		webhooks[i].CurrentRate = rates[webhooks[i].TargetCurrency]
+		webhooks[i].WebhookURL = ""
+		webhooks[i].KeyId= ""
+		if  path[2] == "evaluationtrigger" {
 			body, err := json.Marshal(webhooks[i])
+
 			if err != nil {
 				log.Println(err)
+				status = 500
 				} else {
 
 				response, err := http.Post(webhooks[i].WebhookURL, "application/json", bytes.NewBuffer(body))
+				defer response.Body.Close()
+				if err != nil {
+					log.Println(err)
+					status = 500
+				}
+				if response.StatusCode != 200 || response.StatusCode != 204 {
+					log.Println("Invoking failed")
+				}
+
+			}
+		}
+	}
+	http.Error(w, http.StatusText(status), status)
+}
+
+func HandlerAverage(w http.ResponseWriter, req *http.Request){
+	status := 200
+	body, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		panic(err)
+		status = 400
+	}
+	var average float64
+	baseValues := webhookobj{}
+	err = json.Unmarshal(body,baseValues)
+	if err != nil{
+		status = 500
+	}
+	allRates, thingy := FixerColl.FindAllRates()
+	if thingy == 0 {
+		status = 500
+	}
+	//length := len(allRates)-1
+
+	for i := 0; i <= 2; i++{
+
+		average += allRates[i].Rates[baseValues.TargetCurrency]
+	}
+	response, err := json.Marshal(average)
+	if err != nil{
+		log.Println(err)
+		status = 500
+	}
+
+	w.Write(response)
+	http.Error(w, http.StatusText(status), status)
+}
+
+
+func InvokeAll(){
+	webhooks, thingy := Database.FindAll()
+	if thingy == 0{
+		log.Println( "findAll failed")
+	}
+
+
+	timeValue := time.Now().Local().String()
+	parts := strings.Split(timeValue, " ")
+	rates,thang := FixerColl.FindRates(parts[0])
+	if thang == 0{
+		log.Println("findRates failed")
+	}
+	nrOfWebhooks := len(webhooks) - 1
+
+
+	for i := 0; i <= nrOfWebhooks; i++ {
+		currentWebRate := rates[webhooks[i].TargetCurrency]
+		webhooks[i].CurrentRate = rates[webhooks[i].TargetCurrency]
+		tempUrl := webhooks[i].WebhookURL
+		webhooks[i].WebhookURL = ""
+		webhooks[i].KeyId= ""
+		if webhooks[i].MaxTriggerValue > currentWebRate || webhooks[i].MinTriggerValue < currentWebRate {
+			body, err := json.Marshal(webhooks[i])
+			if err != nil {
+				log.Println(err)
+			} else {
+
+				response, err := http.Post(tempUrl, "application/json", bytes.NewBuffer(body))
 				defer response.Body.Close()
 				if err != nil {
 					log.Println(err)
@@ -131,26 +238,3 @@ func HandlerInvoke(w http.ResponseWriter, req *http.Request) {
 		}
 	}
 }
-
-func HandlerAverage(w http.ResponseWriter, req *http.Request){
-	body, err := ioutil.ReadAll(req.Body)
-	if err != nil {
-		panic(err)
-	}
-	var average float64
-	baseValues := webhookobj{}
-	err = json.Unmarshal(body,baseValues)
-	allRates := FixerColl.findAllRates()
-	//length := len(allRates)-1
-
-	for i := 0; i <= 2; i++{
-
-		average += allRates[i].Rates[baseValues.TargetCurrency]
-	}
-	response, err := json.Marshal(average)
-	if err != nil{
-		log.Println(err)
-	}
-
-	w.Write(response)
-	}
