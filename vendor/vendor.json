@@ -46,12 +46,6 @@
 			"revisionTime": "2016-08-18T02:01:20Z"
 		},
 		{
-			"checksumSHA1": "OtxIzfHuQC7+EdaTTJEFJzgVemg=",
-			"path": "imt2681/Handlers",
-			"revision": "6c776a6b44e1aa5c599d447a62d6c9731df8b080",
-			"revisionTime": "2017-11-02T12:48:43Z"
-		},
-		{
 			"checksumSHA1": "UFyMw5K/+UNnZCrkzTwn0DwzSXg=",
 			"path": "imt2681/cmd/web",
 			"revision": "6c776a6b44e1aa5c599d447a62d6c9731df8b080",
