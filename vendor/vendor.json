@@ -46,28 +46,28 @@
 			"revisionTime": "2016-08-18T02:01:20Z"
 		},
 		{
-			"checksumSHA1": "IbK5JCuC/mfzloM7BCi4LexAou4=",
+			"checksumSHA1": "jdcWtTWYIiTe9BYj9CCXWIeZN3A=",
 			"path": "imt2681/Handlers",
-			"revision": "bdfb418afcfe541b35b3aa4833872af7bf055dfc",
-			"revisionTime": "2017-11-02T16:58:22Z"
+			"revision": "390439d441c5a5444ba4bdf725c9aa970e20dcf1",
+			"revisionTime": "2017-11-02T18:32:59Z"
 		},
 		{
 			"checksumSHA1": "dURC4rH2Cl2DSdcg+80z7ihBkBU=",
 			"path": "imt2681/cmd/web",
-			"revision": "bdfb418afcfe541b35b3aa4833872af7bf055dfc",
-			"revisionTime": "2017-11-02T16:58:22Z"
+			"revision": "390439d441c5a5444ba4bdf725c9aa970e20dcf1",
+			"revisionTime": "2017-11-02T18:32:59Z"
 		},
 		{
 			"checksumSHA1": "jBpLt4C4t/AYD3y21iPUxclZ4H4=",
 			"path": "imt2681/cmd/worker",
-			"revision": "bdfb418afcfe541b35b3aa4833872af7bf055dfc",
-			"revisionTime": "2017-11-02T16:58:22Z"
+			"revision": "390439d441c5a5444ba4bdf725c9aa970e20dcf1",
+			"revisionTime": "2017-11-02T18:32:59Z"
 		},
 		{
-			"checksumSHA1": "prL3ODTpMIZC0KHRw+c/G6SRlwY=",
+			"checksumSHA1": "ognDf9flp0jwA0q4CpG8lyZIocE=",
 			"path": "imt2681/fixerticker",
-			"revision": "bdfb418afcfe541b35b3aa4833872af7bf055dfc",
-			"revisionTime": "2017-11-02T16:58:22Z"
+			"revision": "390439d441c5a5444ba4bdf725c9aa970e20dcf1",
+			"revisionTime": "2017-11-02T18:32:59Z"
 		}
 	],
 	"rootPath": "imt2681"
