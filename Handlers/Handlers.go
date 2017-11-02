@@ -183,10 +183,13 @@ func HandlerAverage(w http.ResponseWriter, req *http.Request){
 	}
 	length := len(allRates)
 
-	for i := 1; i <= length; i++{
+	for i,rate := range allRates{
 
-		average += allRates[i].Rates[baseValues.TargetCurrency]
+		average +=rate.Rates[baseValues.TargetCurrency]
+		if i == 2 {break}
 	}
+
+	average /=float64(length)
 	response, err := json.Marshal(average)
 	if err != nil{
 		log.Println(err)
