@@ -28,24 +28,7 @@ func(db *webhookdb) Add(s webhookobj) int {
 	}
 	return status
 }
-/*
-func (db *webhookdb)Update (d webhookobj) int {
-	status := 1
-	session, err := mgo.Dial(db.hostURL)
-	if err != nil {
-		panic(err)
-		status = 0
-	}
-	defer session.Close()
 
-	err = session.DB(db.dbName).C(db.webhookCollection).Update(bson.M{"webhookurl": d.WebhookURL},d )
-	if err != nil {
-		fmt.Printf("error: %v",err.Error())
-		status = 0
-		}
-	return status
-}
-*/
 func (db *webhookdb) Find(keyId string) (webhookobj, int) {
 	status := 1
 	session, err := mgo.Dial(db.hostURL)
@@ -77,7 +60,6 @@ func (db *webhookdb) FindRates(date string) (map[string]float64, int) {
 	log.Println(date)
 	resualt:= Mother{}
 	err = session.DB(db.dbName).C(db.webhookCollection).Find(bson.M{"date": date}).One(&resualt)
-	log.Println("lol",resualt)
 	if err != nil{
 		status = 0
 		log.Println("123",err)
