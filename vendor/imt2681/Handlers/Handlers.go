@@ -40,7 +40,7 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 		}
 
 		hash := []byte(uniuri.New())
-		//w.Write([]byte(hash))
+		w.Write([]byte(hash))
 		h := string(hash)
 		t.KeyId = h
 		log.Println("object key id: %v", t.KeyId)
