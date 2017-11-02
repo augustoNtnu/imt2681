@@ -181,9 +181,9 @@ func HandlerAverage(w http.ResponseWriter, req *http.Request){
 	if thingy == 0 {
 		status = 500
 	}
-	length := len(allRates)-1
+	length := len(allRates)
 
-	for i := 0; i <= length; i++{
+	for i := 1; i <= length; i++{
 
 		average += allRates[i].Rates[baseValues.TargetCurrency]
 	}
