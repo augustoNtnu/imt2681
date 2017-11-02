@@ -81,6 +81,7 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 		log.Println("error i switch")
 	}
 	//http.Error(w, http.StatusText(status), status)
+	w.WriteHeader(status)
 
 }
 
@@ -116,7 +117,7 @@ func HandlerLatest (w http.ResponseWriter, req *http.Request){
 		status = 500
 	}
 	w.Write(ok2)
-	http.Error(w, http.StatusText(status), status)
+	w.WriteHeader(status)
 }
 
 func HandlerInvoke(w http.ResponseWriter, req *http.Request) {
@@ -160,7 +161,7 @@ func HandlerInvoke(w http.ResponseWriter, req *http.Request) {
 			}
 		}
 	}
-	http.Error(w, http.StatusText(status), status)
+	w.WriteHeader(status)
 }
 
 func HandlerAverage(w http.ResponseWriter, req *http.Request){
@@ -193,7 +194,7 @@ func HandlerAverage(w http.ResponseWriter, req *http.Request){
 	}
 
 	w.Write(response)
-	http.Error(w, http.StatusText(status), status)
+	w.WriteHeader(status)
 }
 
 

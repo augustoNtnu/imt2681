@@ -81,6 +81,7 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 		log.Println("error i switch")
 	}
 	//http.Error(w, http.StatusText(status), status)
+	w.WriteHeader(status)
 
 }
 
