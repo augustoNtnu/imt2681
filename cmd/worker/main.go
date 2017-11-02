@@ -1,9 +1,12 @@
 package main
 
-import "imt2681/fixerticker"
+import (
+	"imt2681/Handlers"
+
+)
 
 
 
 func main(){
-fixerticker.Ticker()
+Handlers.ticker
 }
