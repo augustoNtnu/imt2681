@@ -19,8 +19,8 @@ type testingStruct struct {
 
 
 }
-var Datatest = webhookdb{"user2:test2@ds042527.mlab.com:42527/cloudtech", "cloudtesting","webhooks"}
-var Fixertest = webhookdb{"user2:test2@ds042527.mlab.com:42527/cloudtech","cloudtesting","fixers"}
+var Datatest = webhookdb{"user2:test2@ds042527.mlab.com:42527/cloudtesting", "cloudtesting","webhooks"}
+var Fixertest = webhookdb{"user2:test2@ds042527.mlab.com:42527/cloudtesting","cloudtesting","fixers"}
 var testingObj = webhookobj{"dwasdw2d3asd2","localhost:8085/hello", "EUR","NOK",1.6,1.50,2.55}
 //var Fixertest = webhookdb{"127.0.0.1:27017", "cloudtest","fixers"}
 //var Datatest = webhookdb{"127.0.0.1:27017", "cloudtest","webhooks"}
