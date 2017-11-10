@@ -4,7 +4,7 @@ import (
 	"testing"
 	//"net/http"
 	//"net/http/httptest"
-	"time"
+	//"time"
 	"log"
 
 	//"strings"
@@ -12,7 +12,7 @@ import (
 	"net/http/httptest"
 	"encoding/json"
 	"bytes"
-	"strings"
+	//"strings"
 )
 type testingStruct struct {
 	BaseCurrency string `json:"basecurrency"`
@@ -22,7 +22,7 @@ type testingStruct struct {
 }
 var Datatest = webhookdb{"user2:test2@ds042417.mlab.com:42417/cloudtesting", "cloudtesting","webhooks"}
 var Fixertest = webhookdb{"user2:test2@ds042417.mlab.com:42417/cloudtesting","cloudtesting","fixers"}
-var testingObj = webhookobj{"dwasdw2d3asd2","localhost:8085/hello", "EUR","NOK",1.6,1.50,2.55}
+var testingObj = webhookobj{"dwasdw2d3asd2","google.com/", "EUR","NOK",1.46,1.50,2.55}
 //var Fixertest = webhookdb{"127.0.0.1:27017", "cloudtest","fixers"}
 //var Datatest = webhookdb{"127.0.0.1:27017", "cloudtest","webhooks"}
 func TestWebhookdb_Add(t *testing.T) {
@@ -77,11 +77,11 @@ func TestWebhookdb_FindAllRates(t *testing.T) {
 }
 
 func TestWebhookdb_FindRates(t *testing.T) {
-	temp := time.Now().Local().String()
-	fixerDate := strings.Split(temp, "/")
+	//temp := time.Now().Local().String()
+	//fixerDate := strings.Split(temp, "/")
 
-	//fixerDate := "2017-11-	10"
-	value,status :=Fixertest.FindRates(fixerDate[0])
+	fixerDate := "2017-11-10"
+	value,status :=Fixertest.FindRates(fixerDate)
 	if status == 0{
 		t.Error("FindRates failed")
 	}
@@ -96,12 +96,6 @@ func TestWebhookdb_FindAll(t *testing.T) {
 	value[0].KeyId = ""
 }
 
-
-
-func TestInvokeAll(t *testing.T) {
-	Datatest.InvokeAll(Fixertest)
-}
-
 func TestHandlerInvoke(t *testing.T) {
 	req, err := http.NewRequest("POST", "/evaluationtrigger/",nil)
 	if err != nil{
@@ -110,12 +104,8 @@ func TestHandlerInvoke(t *testing.T) {
 rr:= httptest.NewRecorder()
 handler := http.HandlerFunc(HandlerInvoke)
 handler.ServeHTTP(rr,req)
-
-if status := rr.Code; status != http.StatusOK{
-	t.Errorf("handler returned wrong status code:", status, http.StatusOK)
 }
 
-}
 func TestHandlerAverage(t *testing.T) {
 	test := testingStruct{"EUR", "NOK"}
 	body, err:= json.Marshal(test)

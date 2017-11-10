@@ -5,8 +5,8 @@ package Handlers
 //import "os"
 
 type webhookobj struct {
-	KeyId 			string		`json:"keyId,omitempty"`
-	WebhookURL      string 		`json:"webhookURL,omitempty"`
+	KeyId 			string		`json:"keyId"`
+	WebhookURL      string 		`json:"webhookURL"`
 	BaseCurrency    string 		`json:"baseCurrency"`
 	TargetCurrency  string 		`json:"targetCurrency"`
 	CurrentRate 	float64 	`json:"currentRate"`

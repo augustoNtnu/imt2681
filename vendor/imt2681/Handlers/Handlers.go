@@ -205,14 +205,15 @@ func (db *webhookdb)InvokeAll(fixer webhookdb){
 	}
 
 
-	timeValue := time.Now().Local().String()
-	parts := strings.Split(timeValue, " ")
-	rates,thang := fixer.FindRates(parts[0])
+	//timeValue := time.Now().Local().String()
+	//parts := strings.Split(timeValue, " ")
+	parts := "2017-11-10"
+	rates,thang := fixer.FindRates(parts)
 	if thang == 0{
 		log.Println("findRates failed")
 	}
-	nrOfWebhooks := len(webhooks) - 1
-
+	nrOfWebhooks := len(webhooks)
+	log.Println(nrOfWebhooks)
 
 	for i := 0; i <= nrOfWebhooks; i++ {
 		currentWebRate := rates[webhooks[i].TargetCurrency]
@@ -227,14 +228,14 @@ func (db *webhookdb)InvokeAll(fixer webhookdb){
 			} else {
 
 				response, err := http.Post(tempUrl, "application/json", bytes.NewBuffer(body))
-				defer response.Body.Close()
+
 				if err != nil {
 					log.Println(err)
 				}
 				if response.StatusCode != 200 || response.StatusCode != 204 {
 					log.Println("Invoking failed")
 				}
-
+				response.Body.Close()
 			}
 		}
 	}

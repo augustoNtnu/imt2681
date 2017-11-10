@@ -46,32 +46,28 @@
 			"revisionTime": "2016-08-18T02:01:20Z"
 		},
 		{
-			"checksumSHA1": "+KvIRtrBbSkbk2Xocspf8Kw5tgc=",
-			"origin": "imt2681/vendor/imt2681/Handlers",
+			"checksumSHA1": "xIKTuqUjoU3+VjaEH1XNIlZwRGU=",
 			"path": "imt2681/Handlers",
-			"revision": "c78f87b2d7d33189da16a98d41a5d747e5e7b9f4",
-			"revisionTime": "2017-11-10T21:17:01Z"
+			"revision": "c4732f2c5573c38d8026bb989d68f712fe00d086",
+			"revisionTime": "2017-11-10T21:28:01Z"
 		},
 		{
 			"checksumSHA1": "dURC4rH2Cl2DSdcg+80z7ihBkBU=",
-			"origin": "imt2681/vendor/imt2681/cmd/web",
 			"path": "imt2681/cmd/web",
-			"revision": "c78f87b2d7d33189da16a98d41a5d747e5e7b9f4",
-			"revisionTime": "2017-11-10T21:17:01Z"
+			"revision": "c4732f2c5573c38d8026bb989d68f712fe00d086",
+			"revisionTime": "2017-11-10T21:28:01Z"
 		},
 		{
 			"checksumSHA1": "jBpLt4C4t/AYD3y21iPUxclZ4H4=",
-			"origin": "imt2681/vendor/imt2681/cmd/worker",
 			"path": "imt2681/cmd/worker",
-			"revision": "c78f87b2d7d33189da16a98d41a5d747e5e7b9f4",
-			"revisionTime": "2017-11-10T21:17:01Z"
+			"revision": "c4732f2c5573c38d8026bb989d68f712fe00d086",
+			"revisionTime": "2017-11-10T21:28:01Z"
 		},
 		{
 			"checksumSHA1": "ognDf9flp0jwA0q4CpG8lyZIocE=",
-			"origin": "imt2681/vendor/imt2681/fixerticker",
 			"path": "imt2681/fixerticker",
-			"revision": "c78f87b2d7d33189da16a98d41a5d747e5e7b9f4",
-			"revisionTime": "2017-11-10T21:17:01Z"
+			"revision": "c4732f2c5573c38d8026bb989d68f712fe00d086",
+			"revisionTime": "2017-11-10T21:28:01Z"
 		}
 	],
 	"rootPath": "imt2681"

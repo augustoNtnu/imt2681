@@ -56,13 +56,13 @@ func (db *webhookdb) FindRates(date string) (map[string]float64, int) {
 		panic(err)
 		status = 0
 	}
+	log.Println("date for find rates", date)
 	defer session.Close()
-	log.Println(date)
 	resualt:= Mother{}
-	err = session.DB(db.dbName).C(db.webhookCollection).Find(bson.M{"date": date}).One(&resualt)
+	err = session.DB(db.dbName).C(db.webhookCollection).Find(bson.M{"date":date}).One(&resualt)
 	if err != nil{
 		status = 0
-		log.Println("123",err)
+		log.Println("1234",err)
 	}
 	var res map[string]float64 = resualt.Rates
 	return res, status
@@ -77,7 +77,7 @@ func (db *webhookdb) FindFixer(date string) (Mother,int) {
 	defer session.Close()
 	log.Println(date)
 	resualt:= Mother{}
-	err = session.DB(db.dbName).C(db.webhookCollection).Find(bson.M{"date": date}).One(&resualt)
+	err = session.DB(db.dbName).C(db.webhookCollection).Find(bson.M{"date":date}).One(&resualt)
 	log.Println("lol",resualt)
 	if err != nil{
 		status = 0
@@ -95,7 +95,7 @@ func(db *webhookdb) Delete(keyId string) int {
 	}
 	defer session.Close()
 
-	err = session.DB(db.dbName).C(db.webhookCollection).Remove(bson.M{"keyid": keyId})
+	err = session.DB(db.dbName).C(db.webhookCollection).Remove(bson.M{"keyid":keyId})
 	if err != nil{
 		log.Println("error:  %v", err.Error())
 		status = 0
