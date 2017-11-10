@@ -12,6 +12,7 @@ import (
 	"net/http/httptest"
 	"encoding/json"
 	"bytes"
+	"strings"
 )
 type testingStruct struct {
 	BaseCurrency string `json:"basecurrency"`
@@ -19,8 +20,8 @@ type testingStruct struct {
 
 
 }
-var Datatest = webhookdb{"user2:test2@ds042527.mlab.com:42527/cloudtesting", "cloudtesting","webhooks"}
-var Fixertest = webhookdb{"user2:test2@ds042527.mlab.com:42527/cloudtesting","cloudtesting","fixers"}
+var Datatest = webhookdb{"user2:test2@ds042417.mlab.com:42417/cloudtesting", "cloudtesting","webhooks"}
+var Fixertest = webhookdb{"user2:test2@ds042417.mlab.com:42417/cloudtesting","cloudtesting","fixers"}
 var testingObj = webhookobj{"dwasdw2d3asd2","localhost:8085/hello", "EUR","NOK",1.6,1.50,2.55}
 //var Fixertest = webhookdb{"127.0.0.1:27017", "cloudtest","fixers"}
 //var Datatest = webhookdb{"127.0.0.1:27017", "cloudtest","webhooks"}
@@ -45,7 +46,7 @@ func TestWebhookdb_AddFixer(t *testing.T) {
 
 	//fixerDate := time.Now().Local().String()
 	//parts := strings.Split(fixerDate, " ")
-	fixerdate:= "2017-11-02"
+	fixerdate:= "2017-11-10"
 
 	resault,status  :=Fixertest.FindFixer(fixerdate)
 	if status == 0 {
@@ -76,9 +77,11 @@ func TestWebhookdb_FindAllRates(t *testing.T) {
 }
 
 func TestWebhookdb_FindRates(t *testing.T) {
-	fixerDate := time.Now().Local().String()
+	temp := time.Now().Local().String()
+	fixerDate := strings.Split(temp, "/")
 
-	value,status :=Fixertest.FindRates(fixerDate)
+	//fixerDate := "2017-11-	10"
+	value,status :=Fixertest.FindRates(fixerDate[0])
 	if status == 0{
 		t.Error("FindRates failed")
 	}
@@ -93,19 +96,8 @@ func TestWebhookdb_FindAll(t *testing.T) {
 	value[0].KeyId = ""
 }
 
-func TestWebhookdb_Delete(t *testing.T) {
-	status := Datatest.Delete(testingObj.KeyId)
-	if status== 0{
-		t.Error("delete failed")
-	}
-}
-func TestWebhookdb_DropCollection(t *testing.T) {
-	status := Fixertest.DropCollection()
-	if status == 0 {
-		t.Error("dropping failed")
-	}
 
-}
+
 func TestInvokeAll(t *testing.T) {
 	Datatest.InvokeAll(Fixertest)
 }
@@ -141,5 +133,19 @@ func TestHandlerAverage(t *testing.T) {
 	handler.ServeHTTP(rr,req)
 	if status:= rr.Code; status != http.StatusOK{
 		t.Errorf("handler not returning 200 ", status,http.StatusOK)
+	}
+}
+func TestWebhookdb_DropCollection(t *testing.T) {
+	status := Fixertest.DropCollection()
+	if status == 0 {
+		t.Error("dropping failed")
+	}
+
+
+}
+func TestWebhookdb_Delete(t *testing.T) {
+	status := Datatest.Delete(testingObj.KeyId)
+	if status== 0{
+		t.Error("delete failed")
 	}
 }
