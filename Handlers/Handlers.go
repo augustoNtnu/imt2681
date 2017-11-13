@@ -130,7 +130,7 @@ func HandlerInvoke(w http.ResponseWriter, req *http.Request) {
 	if thang == 0 {
 		status = 500
 	}
-	nrOfWebhooks := len(webhooks) - 1
+	nrOfWebhooks := len(webhooks) -1
 	path := strings.Split(req.URL.Path, "/")
 
 	for i := 0; i <= nrOfWebhooks; i++ {
@@ -198,46 +198,47 @@ func HandlerAverage(w http.ResponseWriter, req *http.Request){
 }
 
 
-func (db *webhookdb)InvokeAll(fixer webhookdb){
+func (db *webhookdb)InvokeAll(fixer webhookdb) {
 	webhooks, thingy := db.FindAll()
-	if thingy == 0{
-		log.Println( "findAll failed")
-	}
+	if thingy == 0 {
+		log.Println("findAll failed")
+	} else {
 
+		timeValue := time.Now().Local().String()
+		parts := strings.Split(timeValue, " ")
+		//parts := "2017-11-10"
+		rates, thang := fixer.FindRates(parts[0])
+		if thang == 0 {
+			log.Println("findRates failed")
+		}else {
+			nrOfWebhooks := 0
+			log.Println("# of webhooks",nrOfWebhooks)
 
-	//timeValue := time.Now().Local().String()
-	//parts := strings.Split(timeValue, " ")
-	parts := "2017-11-10"
-	rates,thang := fixer.FindRates(parts)
-	if thang == 0{
-		log.Println("findRates failed")
-	}
-	nrOfWebhooks := 0
-	log.Println("# of webhooks",nrOfWebhooks)
+			for i := 0; i <= nrOfWebhooks; i++ {
+				currentWebRate := rates[webhooks[i].TargetCurrency]
+				webhooks[i].CurrentRate = rates[webhooks[i].TargetCurrency]
+				tempUrl := webhooks[i].WebhookURL
+				webhooks[i].WebhookURL = ""
+				webhooks[i].KeyId= ""
+				if webhooks[i].MaxTriggerValue > currentWebRate || webhooks[i].MinTriggerValue < currentWebRate {
+					body, err := json.Marshal(webhooks[i])
+					if err != nil {
+						log.Println(err)
+					} else {
 
-	for i := 0; i <= nrOfWebhooks; i++ {
-		currentWebRate := rates[webhooks[i].TargetCurrency]
-		webhooks[i].CurrentRate = rates[webhooks[i].TargetCurrency]
-		tempUrl := webhooks[i].WebhookURL
-		webhooks[i].WebhookURL = ""
-		webhooks[i].KeyId= ""
-		if webhooks[i].MaxTriggerValue > currentWebRate || webhooks[i].MinTriggerValue < currentWebRate {
-			body, err := json.Marshal(webhooks[i])
-			if err != nil {
-				log.Println(err)
-			} else {
+						response, err := http.Post(tempUrl, "application/json", bytes.NewBuffer(body))
 
-				response, err := http.Post(tempUrl, "application/json", bytes.NewBuffer(body))
-
-				if err != nil {
-					log.Println(err)
+						if err != nil {
+							log.Println(err)
+						}
+						if response.StatusCode != 200 || response.StatusCode != 204 {
+							log.Println("Invoking failed")
+						}
+						response.Body.Close()
+					}
 				}
-				if response.StatusCode != 200 || response.StatusCode != 204 {
-					log.Println("Invoking failed")
-				}
-				response.Body.Close()
 			}
 		}
+
 	}
 }
-

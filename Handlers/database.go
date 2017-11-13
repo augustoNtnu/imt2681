@@ -78,7 +78,7 @@ func (db *webhookdb) FindFixer(date string) (Mother,int) {
 	log.Println(date)
 	resualt:= Mother{}
 	err = session.DB(db.dbName).C(db.webhookCollection).Find(bson.M{"date":date}).One(&resualt)
-	log.Println("lol",resualt)
+	log.Println("FindFixer resault",resualt)
 	if err != nil{
 		status = 0
 		log.Println("123",err)
@@ -178,7 +178,7 @@ func(w *webhookdb) FechtAll() int{
 		status = 0
 		panic(err)
 	}
-	defer resp.Body.Close()
+
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil{
 		status = 0
@@ -190,12 +190,14 @@ func(w *webhookdb) FechtAll() int{
 		status = 0
 		panic(err.Error())
 	}
-	log.Println(values)
+	log.Println("FetchAll object",values)
 	query, thingy := w.FindFixer(values.Date)
 	if values.Date == query.Date{
 		log.Println("if 0, then error:  ",thingy)
 		log.Println("		todays fixer already exist")
 	}else {w.AddFixer(values)}
+
+	resp.Body.Close()
 	return status
 }
 
