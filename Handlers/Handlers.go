@@ -18,7 +18,6 @@ import (
 func HandlerHook(w http.ResponseWriter, req *http.Request) {
 	parts := strings.Split(req.URL.Path, "/")
 	status := 200
-//	var status int
 	log.Println(len(parts))
 
 	switch req.Method {
@@ -27,24 +26,27 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			log.Println(err)
 			status = 400
-		}
-		//log.Println(string(body))
+		}else  {
+			t := webhookobj{}
+			err = json.Unmarshal(body, &t)
+			if err != nil {
+				status = 400
+			}else {
+				hash := []byte(uniuri.New())
+				w.Write([]byte(hash))
+				h := string(hash)
+				t.KeyId = h
+				log.Println("object key id: %v", t.KeyId)
+				value2 := Database.Add(t)
+				if value2 == 0{
+					status = 500
+				}
+			}
 
-		t := webhookobj{}
-		err = json.Unmarshal(body, &t)
-		if err != nil {
-			status = 400
+
 		}
 
-		hash := []byte(uniuri.New())
-		w.Write([]byte(hash))
-		h := string(hash)
-		t.KeyId = h
-		log.Println("object key id: %v", t.KeyId)
-		value2 := Database.Add(t)
-		if value2 == 0{
-			status = 500
-		}
+
 
 
 	case "GET":
@@ -56,14 +58,18 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 		db, faenskap = Database.Find(keyId)
 		if faenskap == 0 {
 			status = 500
+		}else  {
+			log.Println(db.KeyId)
+			value, err := json.Marshal(db)
+			if err != nil {
+				log.Println("error encoding webhook:  %v", err.Error())
+				status = 500
+			}else {
+				w.Write(value)
+			}
+
 		}
-		log.Println(db.KeyId)
-		value, err := json.Marshal(db)
-		if err != nil {
-			log.Println("error encoding webhook:  %v", err.Error())
-			status = 500
-		}
-		w.Write(value)
+
 
 	case "DELETE":
 		keyId := parts[2]
@@ -75,7 +81,7 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 		}
 
 	default:
-		log.Println("error i switch")
+		log.Println("HTTP protocol is not recongnized")
 	}
 	//http.Error(w, http.StatusText(status), status)
 	w.WriteHeader(status)
@@ -88,32 +94,37 @@ func HandlerLatest (w http.ResponseWriter, req *http.Request){
 	if err != nil {
 		panic(err)
 		status = 400
-	}
-	t := webhookobj{}
-	err = json.Unmarshal(body, &t)
-	if err != nil {
-		panic(err)
-		status = 400
-	}
-	time := time.Now().UTC().String()
-	parts:= strings.Split(time, " ")
-	parts[0] = "2017-11-01"
+	}else{
+		t := webhookobj{}
+		err = json.Unmarshal(body, &t)
+		if err != nil {
+			panic(err)
+			status = 400
+		}else {
+			time := time.Now().UTC().String()
+			parts:= strings.Split(time, " ")
 
-	//time.Format("2006-01-02")
-	log.Println("tid",parts[0])
-	log.Println("Kroner for vi hope",t.TargetCurrency)
-	resault, thingy:= FixerColl.FindRates(parts[0])
-	if thingy == 0{
-		status = 500
+
+			log.Println("tid",parts[0])
+			log.Println("Kroner for vi hope",t.TargetCurrency)
+			resault, thingy:= FixerColl.FindRates(parts[0])
+			if thingy == 0{
+				status = 500
+			}else  {
+				ok := resault[t.TargetCurrency]
+				ok2,err := json.Marshal(ok)
+				if err !=nil {
+					log.Println(err)
+					status = 500
+				}else{ w.Write(ok2)}
+			}
+
+
+		}
+
 	}
 
-	ok := resault[t.TargetCurrency]
-	ok2,err := json.Marshal(ok)
-	if err !=nil {
-		log.Println(err)
-		status = 500
-	}
-	w.Write(ok2)
+
 	w.WriteHeader(status)
 }
 
@@ -167,33 +178,38 @@ func HandlerAverage(w http.ResponseWriter, req *http.Request){
 	if err != nil {
 		panic(err)
 		status = 400
-	}
-	var average float64
-	baseValues := webhookobj{}
-	err = json.Unmarshal(body,baseValues)
-	if err != nil{
-		status = 500
-	}
-	allRates, thingy := FixerColl.FindAllRates()
-	if thingy == 0 {
-		status = 500
-	}
-	length := len(allRates)
+	}else {
+		var average float64
+		baseValues := webhookobj{}
+		err = json.Unmarshal(body,baseValues)
+		if err != nil{
+			status = 500
+		}else {
+			allRates, thingy := FixerColl.FindAllRates()
+			if thingy == 0 {
+				status = 500
+			}else  {
+				length := len(allRates)
 
-	for i,rate := range allRates{
+				for i,rate := range allRates{
 
-		average +=rate.Rates[baseValues.TargetCurrency]
-		if i == 2 {break}
+					average +=rate.Rates[baseValues.TargetCurrency]
+					if i == 2 {break}
+				}
+
+				average /=float64(length)
+				response, err := json.Marshal(average)
+				if err != nil{
+					log.Println(err)
+					status = 500
+				}else {w.Write(response)}
+				
+			}
+
+		}
+
 	}
 
-	average /=float64(length)
-	response, err := json.Marshal(average)
-	if err != nil{
-		log.Println(err)
-		status = 500
-	}
-
-	w.Write(response)
 	w.WriteHeader(status)
 }
 
@@ -206,7 +222,7 @@ func (db *webhookdb)InvokeAll(fixer webhookdb) {
 		log.Println(webhooks)
 		timeValue := time.Now().Local().String()
 		parts := strings.Split(timeValue, " ")
-		//parts := "2017-11-10"
+
 		rates, thang := fixer.FindRates(parts[0])
 
 		if thang == 0 {
