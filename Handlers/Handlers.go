@@ -152,7 +152,7 @@ func HandlerInvoke(w http.ResponseWriter, req *http.Request) {
 					status = 500
 				}
 				if response.StatusCode != 200 || response.StatusCode != 204 {
-					log.Println("Invoking failed")
+					log.Println("Invoking failed", response.StatusCode)
 				}
 
 			}
@@ -203,18 +203,19 @@ func (db *webhookdb)InvokeAll(fixer webhookdb) {
 	if thingy == 0 {
 		log.Println("findAll failed")
 	} else {
-
+		log.Println(webhooks)
 		timeValue := time.Now().Local().String()
 		parts := strings.Split(timeValue, " ")
 		//parts := "2017-11-10"
 		rates, thang := fixer.FindRates(parts[0])
+
 		if thang == 0 {
 			log.Println("findRates failed")
 		}else {
-			nrOfWebhooks := 0
+			nrOfWebhooks := len(webhooks)
 			log.Println("# of webhooks",nrOfWebhooks)
 
-			for i := 0; i <= nrOfWebhooks; i++ {
+			for i := 0; i < nrOfWebhooks; i++ {
 				currentWebRate := rates[webhooks[i].TargetCurrency]
 				webhooks[i].CurrentRate = rates[webhooks[i].TargetCurrency]
 				tempUrl := webhooks[i].WebhookURL

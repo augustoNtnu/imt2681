@@ -24,7 +24,7 @@ type testingStruct struct {
 }
 //var Datatest = webhookdb{"user2:test2@ds042417.mlab.com:42417/cloudtesting", "cloudtesting","webhooks"}
 //var Fixertest = webhookdb{"user2:test2@ds042417.mlab.com:42417/cloudtesting","cloudtesting","fixers"}
-var testingObj = webhookobj{"dwasdw2d3asd2","google.com/", "EUR","NOK",1.46,1.50,2.55}
+var testingObj = webhookobj{"dwasdw2d3asd2","http://www.google.com/", "EUR","NOK",1.46,1.50,2.55}
 var Fixertest = webhookdb{"mongodb://localhost:27017", "cloudtest","fixers"}
 var Datatest = webhookdb{"mongodb://localhost:27017", "cloudtest","webhooks"}
 
@@ -101,6 +101,10 @@ func TestWebhookdb_FindAll(t *testing.T) {
 	}
 	value[0].KeyId = ""
 	log.Println("FindAll finished")
+}
+
+func TestWebhookdb_InvokeAll(t *testing.T) {
+	Datatest.InvokeAll(Fixertest)
 }
 
 func TestHandlerInvoke(t *testing.T) {
