@@ -10,8 +10,8 @@ import (
 func Ticker(){
 var value = 20000
 for i:=0; i <value; i++{
-	value := Handlers.FixerColl.FechtAll()
-	if value == 0 {
+	status := Handlers.FixerColl.FechtAll()
+	if status == 0 {
 		log.Println("error with fetching all")
 	}
 
