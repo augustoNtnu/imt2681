@@ -203,7 +203,7 @@ func HandlerAverage(w http.ResponseWriter, req *http.Request){
 					log.Println(err)
 					status = 500
 				}else {w.Write(response)}
-				
+
 			}
 
 		}
