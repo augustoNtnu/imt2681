@@ -18,14 +18,15 @@ func(db *webhookdb) Add(s webhookobj) int {
 	if err != nil {
 		panic(err)
 		status = 0
+	}else {
+		err = session.DB(db.dbName).C(db.webhookCollection).Insert(s)
+		if err != nil {
+			fmt.Printf("error in insert: %v", err.Error())
+			status = 0
+		}
+		defer session.Close()
 	}
-	defer session.Close()
 
-	err = session.DB(db.dbName).C(db.webhookCollection).Insert(s)
-	if err != nil {
-		fmt.Printf("error in insert: %v", err.Error())
-		status = 0
-	}
 	return status
 }
 
