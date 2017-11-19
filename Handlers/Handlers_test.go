@@ -15,6 +15,7 @@ import (
 	//"strings"
 	"strings"
 	"time"
+
 )
 type testingStruct struct {
 	BaseCurrency string `json:"basecurrency"`
@@ -25,8 +26,8 @@ type testingStruct struct {
 //var Datatest = webhookdb{"user2:test2@ds042417.mlab.com:42417/cloudtesting", "cloudtesting","webhooks"}
 //var Fixertest = webhookdb{"user2:test2@ds042417.mlab.com:42417/cloudtesting","cloudtesting","fixers"}
 var testingObj = webhookobj{"dwasdw2d3asd2","http://www.google.com/", "EUR","NOK",1.46,1.50,2.55}
-var Fixertest = webhookdb{"mongodb://localhost:27017", "cloudtest","fixers"}
-var Datatest = webhookdb{"mongodb://localhost:27017", "cloudtest","webhooks"}
+var Fixertest = webhookdb{"mongodb://localhost", "cloudtest","fixers"}
+var Datatest = webhookdb{"mongodb://localhost", "cloudtest","webhooks"}
 
 func TestWebhookdb_Add(t *testing.T) {
 
