@@ -8,10 +8,10 @@ import (
 	"log"
 
 	//"strings"
-	"net/http"
-	"net/http/httptest"
-	"encoding/json"
-	"bytes"
+	//"net/http"
+	//"net/http/httptest"
+	//"encoding/json"
+	//"bytes"
 	//"strings"
 	"strings"
 	"time"
@@ -51,12 +51,13 @@ func TestWebhookdb_AddFixer(t *testing.T) {
 
 	fixerDate := time.Now().Local().String()
 	parts := strings.Split(fixerDate, " ")
+	log.Println(parts[0])
 
 	resault,status  :=Fixertest.FindFixer(parts[0])
 	if status == 0 {
 		t.Error("findingFixer failed")
 	}
-	resault.Date = "2017-11-03"
+
 	status = Fixertest.AddFixer(resault)
 	if status == 0 {
 		t.Error("addFixer failed")
@@ -86,7 +87,7 @@ log.Println("findAllRates finished")
 func TestWebhookdb_FindRates(t *testing.T) {
 	temp := time.Now().Local().String()
 	fixerDate := strings.Split(temp, " ")
-	log.Println("fixerDate: ", fixerDate)
+	log.Println("fixerDate: ", fixerDate[0])
 
 	value,status :=Fixertest.FindRates(fixerDate[0])
 	if status == 0{
@@ -107,7 +108,7 @@ func TestWebhookdb_FindAll(t *testing.T) {
 func TestWebhookdb_InvokeAll(t *testing.T) {
 	Datatest.InvokeAll(Fixertest)
 }
-
+/*
 func TestHandlerInvoke(t *testing.T) {
 	req, err := http.NewRequest("POST", "/evaluationtrigger/",nil)
 	if err != nil{
@@ -118,7 +119,8 @@ handler := http.HandlerFunc(HandlerInvoke)
 handler.ServeHTTP(rr,req)
 log.Println("testHandlerInvoke Finished")
 }
-
+*/
+/*
 func TestHandlerAverage(t *testing.T) {
 	test := testingStruct{"EUR", "NOK"}
 	body, err:= json.Marshal(test)
@@ -126,7 +128,7 @@ func TestHandlerAverage(t *testing.T) {
 		t.Error("marshalling failed")
 	}
 
-	req, err := http.NewRequest("POST", "/evaluationtrigger/",bytes.NewBuffer(body))
+	req, err := http.NewRequest("GET", "/average/",bytes.NewBuffer(body))
 	if err != nil {
 		t.Error("nw request faield")
 	}
@@ -138,6 +140,7 @@ func TestHandlerAverage(t *testing.T) {
 		t.Error("handler not returning 200 ", status,http.StatusOK)
 	}
 }
+*/
 func TestWebhookdb_DropCollection(t *testing.T) {
 	status := Fixertest.DropCollection()
 	if status == 0 {

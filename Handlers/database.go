@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"io/ioutil"
 	"encoding/json"
+	"time"
+	"strings"
 )
 
 
@@ -61,8 +63,13 @@ func (db *webhookdb) FindRates(date string) (map[string]float64, int) {
 	resualt:= Mother{}
 	err = session.DB(db.dbName).C(db.webhookCollection).Find(bson.M{"date":date}).One(&resualt)
 	if err != nil{
-		status = 0
-		log.Println("1234",err)
+
+		time2 :=strings.Split(time.Now().AddDate(0,0,-1).String(), " ")
+		err = session.DB(db.dbName).C(db.webhookCollection).Find(bson.M{"date":time2[0]}).One(&resualt)
+		if err != nil {
+			status = 0
+			log.Println("FindRates is not working", resualt)
+		}
 	}
 	var res map[string]float64 = resualt.Rates
 	return res, status
@@ -80,8 +87,12 @@ func (db *webhookdb) FindFixer(date string) (Mother,int) {
 	err = session.DB(db.dbName).C(db.webhookCollection).Find(bson.M{"date":date}).One(&resualt)
 	log.Println("FindFixer resault",resualt)
 	if err != nil{
-		status = 0
-		log.Println("123",err)
+		time2 :=strings.Split(time.Now().AddDate(0,0,-1).String(), " ")
+		err = session.DB(db.dbName).C(db.webhookCollection).Find(bson.M{"date":time2[0]}).One(&resualt)
+		if err != nil {
+			status = 0
+			log.Println("Findfixer is not working", resualt)
+		}
 	}
 	return resualt, status
 }

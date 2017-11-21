@@ -144,7 +144,7 @@ func HandlerInvoke(w http.ResponseWriter, req *http.Request) {
 	nrOfWebhooks := len(webhooks) -1
 	path := strings.Split(req.URL.Path, "/")
 
-	for i := 0; i <= nrOfWebhooks; i++ {
+	for i := 0; i < nrOfWebhooks; i++ {
 		webhooks[i].CurrentRate = rates[webhooks[i].TargetCurrency]
 		webhooks[i].WebhookURL = ""
 		webhooks[i].KeyId= ""
