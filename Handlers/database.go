@@ -17,7 +17,7 @@ func(db *webhookdb) Add(s webhookobj) int {
 	session, err := mgo.Dial(db.hostURL)
 	if err != nil {
 		panic(err)
-		status = 0
+
 	}else {
 		err = session.DB(db.dbName).C(db.webhookCollection).Insert(s)
 		if err != nil {
@@ -35,7 +35,6 @@ func (db *webhookdb) Find(keyId string) (webhookobj, int) {
 	session, err := mgo.Dial(db.hostURL)
 	if err != nil {
 		panic(err)
-		status = 0
 	}
 	defer session.Close()
 	resualt := webhookobj{}
@@ -55,7 +54,7 @@ func (db *webhookdb) FindRates(date string) (map[string]float64, int) {
 	session,err  := mgo.Dial(db.hostURL)
 	if err != nil {
 		panic(err)
-		status = 0
+
 	}
 	log.Println("date for find rates", date)
 	defer session.Close()
@@ -73,7 +72,7 @@ func (db *webhookdb) FindFixer(date string) (Mother,int) {
 	session,err  := mgo.Dial(db.hostURL)
 	if err != nil {
 		panic(err)
-		status = 0
+
 	}
 	defer session.Close()
 	log.Println(date)
@@ -92,13 +91,13 @@ func(db *webhookdb) Delete(keyId string) int {
 	session, err := mgo.Dial(db.hostURL)
 	if err != nil {
 		panic(err)
-		status = 0
+
 	}
 	defer session.Close()
 
 	err = session.DB(db.dbName).C(db.webhookCollection).Remove(bson.M{"keyid":keyId})
 	if err != nil{
-		log.Println("error:  %v", err.Error())
+		log.Println("error:  ", err.Error())
 		status = 0
 
 	}
@@ -109,30 +108,30 @@ func (db *webhookdb) AddFixer(m Mother) int{
 	session, err := mgo.Dial(db.hostURL)
 	if err != nil {
 		panic(err)
-		status = 0
 	}
-	defer session.Close()
+
 
 	err = session.DB(db.dbName).C(db.webhookCollection).Insert(m)
 	if err != nil {
 		status = 0
-		fmt.Printf("error in insert: %v", err.Error())
+		fmt.Println("error in insert: ", err.Error())
 	}
+	session.Close()
 	return status
 }
 
 func (db *webhookdb) Count() int{
 	session, err := mgo.Dial(db.hostURL)
 	if err != nil {
-		return 0
 		panic(err)
-
 	}
 	defer session.Close()
+
 	returnValue, err := session.DB(db.dbName).C(db.webhookCollection).Count()
 	if err != nil{
-		log.Println("error:  %v", err.Error())
+		log.Println("error: ", err.Error())
 		return 0
+
 	} else{ return returnValue}
 }
 
@@ -159,7 +158,7 @@ func (db *webhookdb) FindAllRates() ([]Mother, int) {
 	session, err := mgo.Dial(db.hostURL)
 	if err != nil {
 		panic(err)
-		status = 0
+
 	}
 	defer session.Close()
 	allFixers := []Mother{}

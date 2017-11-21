@@ -135,7 +135,7 @@ func TestHandlerAverage(t *testing.T) {
 	handler := http.HandlerFunc(HandlerAverage)
 	handler.ServeHTTP(rr,req)
 	if status:= rr.Code; status != http.StatusOK{
-		t.Errorf("handler not returning 200 ", status,http.StatusOK)
+		t.Error("handler not returning 200 ", status,http.StatusOK)
 	}
 }
 func TestWebhookdb_DropCollection(t *testing.T) {

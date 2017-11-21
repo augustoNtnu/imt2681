@@ -14,7 +14,7 @@ import (
 
 
 
-
+//HandlerHook for post, get and delete webhooks
 func HandlerHook(w http.ResponseWriter, req *http.Request) {
 	parts := strings.Split(req.URL.Path, "/")
 	status := 200
@@ -36,7 +36,7 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 				w.Write([]byte(hash))
 				h := string(hash)
 				t.KeyId = h
-				log.Println("object key id: %v", t.KeyId)
+				log.Println("object key id:", t.KeyId)
 				value2 := Database.Add(t)
 				if value2 == 0{
 					status = 500
@@ -62,7 +62,7 @@ func HandlerHook(w http.ResponseWriter, req *http.Request) {
 			log.Println(db.KeyId)
 			value, err := json.Marshal(db)
 			if err != nil {
-				log.Println("error encoding webhook:  %v", err.Error())
+				log.Println("error encoding webhook:  ", err.Error())
 				status = 500
 			}else {
 				w.Write(value)
@@ -92,13 +92,13 @@ func HandlerLatest (w http.ResponseWriter, req *http.Request){
 	status := 200
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
-		panic(err)
+		log.Println("error in reading from body:  ", err)
 		status = 400
 	}else{
 		t := webhookobj{}
 		err = json.Unmarshal(body, &t)
 		if err != nil {
-			panic(err)
+			log.Println("error in unmarshaling:  ", err)
 			status = 400
 		}else {
 			time := time.Now().UTC().String()
@@ -157,18 +157,19 @@ func HandlerInvoke(w http.ResponseWriter, req *http.Request) {
 				} else {
 
 				response, err := http.Post(webhooks[i].WebhookURL, "application/json", bytes.NewBuffer(body))
-				defer response.Body.Close()
+				response.Body.Close()
 				if err != nil {
 					log.Println(err)
 					status = 500
 				}
-				if response.StatusCode != 200 || response.StatusCode != 204 {
+				if response.StatusCode != 200 && response.StatusCode != 204 {
 					log.Println("Invoking failed", response.StatusCode)
 				}
 
 			}
 		}
 	}
+	req.Body.Close()
 	w.WriteHeader(status)
 }
 
@@ -176,7 +177,7 @@ func HandlerAverage(w http.ResponseWriter, req *http.Request){
 	status := 200
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
-		panic(err)
+		log.Println("failed to readall from body", err)
 		status = 400
 	}else {
 		var average float64
@@ -248,7 +249,7 @@ func (db *webhookdb)InvokeAll(fixer webhookdb) {
 						if err != nil {
 							log.Println(err)
 						}
-						if response.StatusCode != 200 || response.StatusCode != 204 {
+						if response.StatusCode != 200 && response.StatusCode != 204 {
 							log.Println("Invoking failed")
 						}
 						response.Body.Close()
